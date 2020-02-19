@@ -1,7 +1,7 @@
 {
   "name": "test",
   "version": "0.1.0",
-  "description": "A simple WebGL components for accelerated 2D filter or effects. Can be used with Shadertoys codes",
+  "description": "A simple WebGL components for fragment shader. Can be used with Shadertoys codes",
   "main": "dist/vue_glsl.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -14,7 +14,9 @@
   "keywords": [
     "vue",
     "glsl",
-    "ts"
+    "webgl",
+    "shader",
+    "fragment"
   ],
   "author": "kongxiaojian123@live.com",
   "license": "ISC",
