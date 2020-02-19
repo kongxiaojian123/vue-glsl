@@ -300,10 +300,10 @@ void main(){
   | Props      | Type  |  describe   |
   | :--------  | :-----:  |  :----------- |
   | `name`    | `string`   |   `WebGLUniform`名字   |
-  | `value`    | `imageURL|imageObj|webGLProgramName|textureCubeData`   |  用于传入当前`WebGLProgram`纹理的数据   |
-  | `repeat`    | `0|1|2`   |   可以省略，2d纹理有效,0(默认):`gl.CLAMP_TO_EDGE` 1:`gl.REPEAT` 2:`gl.MIRRORED_REPEAT`   |
-  | `repeatX`    | `0|1|2`   |   同上，但是若有`repeat`会被其覆盖   |
-  | `repeatY`    | `0|1|2`   |   同上，但是若有`repeat`会被其覆盖    |
+  | `value`    | `imageURL\|imageObj\|webGLProgramName\|textureCubeData`   |  用于传入当前`WebGLProgram`纹理的数据   |
+  | `repeat`    | `0\|1\|2`   |   可以省略，2d纹理有效,0(默认):`gl.CLAMP_TO_EDGE` 1:`gl.REPEAT` 2:`gl.MIRRORED_REPEAT`   |
+  | `repeatX`    | `0\|1\|2`   |   同上，但是若有`repeat`会被其覆盖   |
+  | `repeatY`    | `0\|1\|2`   |   同上，但是若有`repeat`会被其覆盖    |
 
   
 
@@ -318,12 +318,12 @@ void main(){
   `<object>textureCubeData`:用于添加立方体贴图，并包含以下数据：<br/>
   | Props      | Type  |  describe   |
   | :--------  | :-----:  |  :----------- |
-  | `front`    | `imageURL|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
-  | `back`    | `imageURL|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
-  | `left`    | `imageURL|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
-  | `right`    | `imageURL|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
-  | `top`    | `imageURL|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
-  | `bottom`    | `imageURL|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
+  | `front`    | `imageURL\|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
+  | `back`    | `imageURL\|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
+  | `left`    | `imageURL\|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
+  | `right`    | `imageURL\|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
+  | `top`    | `imageURL\|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
+  | `bottom`    | `imageURL\|imageObj`   |   本地图片链接地址或者`Image`对象，最好为2^n的正方形尺寸   |
 
   
 
