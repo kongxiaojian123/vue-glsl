@@ -6,11 +6,7 @@ vue-glsl 是一个基于vue的片段着色器组件,使用的是webGL 1.0(移动
 
 ## Screenshots
 
-<p align="center">
-  <img width="100%" src="./screenshot.jpg"/>
-</p>
-
-<br>
+![screenshot](./screenshot.jpg)
 
 ## Install and Usage
 
