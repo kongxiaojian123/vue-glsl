@@ -8,7 +8,7 @@
     "build": "vue-cli-service build --target lib --name vue_glsl packages/index.ts"
   },
   "repository": {
-    "type": "git",
+    "type": "git", 
     "url": "git+https://github.com/kongxiaojian123/vue-glsl.git"
   },
   "keywords": [
