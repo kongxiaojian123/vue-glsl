@@ -56,7 +56,7 @@
             this.setSize();
         },
         beforeDestroy(){
-            this.glContext.destroy();
+            this._provided.glContext.destroy();
         }
     });
 </script>
