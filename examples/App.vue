@@ -9,21 +9,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 import glsl from '../packages/index';
 Vue.use(glsl);
-@Component
-export default class App extends Vue {
-  private readonly shaderCode:string=`
+const shader=`
 void main() {
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
     vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
     gl_FragColor = vec4(col,1.0);
 }`;
-  private glslUpdate(){
-    console.log(arguments);
+export default Vue.extend({
+  data(){
+    return{
+      shaderCode:shader,
+    }
+  },
+  methods:{
+    glslUpdate(tickData){
+      console.log(tickData);
+    }
   }
-}
+});
 </script>
 
 <style>
