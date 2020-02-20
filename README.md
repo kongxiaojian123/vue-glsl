@@ -42,28 +42,38 @@ Then use the components !
 ```vue
 <template>
   <div id="app">
-    <gl-canvas>
+    <gl-canvas @update="glslUpdate">
       <gl-program name="main" :code="shaderCode">
+        <gl-float name="u_light" :value="light" />
       </gl-program>
     </gl-canvas>
-    </div>
   </div>
 </template>
 
-<script>
-  const A_SHADER = `void main() {
+<script lang="ts">
+import Vue from 'vue';
+import glsl from '../packages/index';
+Vue.use(glsl);
+const shader=`
+void main() {
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
     vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
-    gl_FragColor = vec4(col,1.0);
-  }`;
-  export default {
-    name: 'App',
-    data() {
-      return {
-        glslCode: A_SHADER,
-      };
+    gl_FragColor = vec4(col*u_light,1.0);
+}`;
+export default Vue.extend({
+  data(){
+    return{
+      light:0,
+      shaderCode:shader,
     }
-  };
+  },
+  methods:{
+    glslUpdate(tickData){
+      //console.log(tickData);
+      this.light = (Math.sin(tickData.iTime)+1)/2;
+    }
+  }
+});
 </script>
 ```
 
@@ -71,7 +81,7 @@ Then use the components !
 
 <details><summary><strong>gl-canvas</strong></summary>
 
-  包含了`canvas`创建，以及webGL环境配置
+  包含了`canvas`创建，以及webGL环境配置,当`gl-canvas`被销毁时，`requestAnimationFrame`也将被销毁。
 
   ---------------------------------
 
@@ -326,8 +336,11 @@ void main(){
   #### 用法：
   ```html
   <gl-canvas>
+    <gl-program name="buffer0" :code="bufferCode0">
+    </gl-program>
     <gl-program name="main" :code="mainCode">
       <gl-image name="u_image0" :value="u_image0">
+      <gl-image name="u_image1" value="buffer0">
     </gl-program>
   </gl-canvas>
   <script>
@@ -335,10 +348,11 @@ void main(){
       data(){
         return{
           u_image0:require('../assets/image0.png'),
+          //bufferCode0:...
           mainCode:`
 void main(){
   vec2 uv = gl_FragCoord.xy/iResolution.xy;
-  gl_FragColor = texture2D(u_image0,uv);
+  gl_FragColor = texture2D(u_image0,uv)+texture2D(u_image1,uv);
 }
           `,
         }

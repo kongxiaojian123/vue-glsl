@@ -39,7 +39,6 @@
                 canvas.height = this.height||parentElement.clientHeight;
                 this.canvasRect = canvas.getBoundingClientRect();
                 const glContext = this._provided.glContext;
-                console.log(glContext.aaa);
                 glContext.init(canvas,this.canvasRect,this.code);
                 glContext.onUpdate=()=>{
                     this.$emit('update',{

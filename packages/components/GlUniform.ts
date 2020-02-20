@@ -19,6 +19,7 @@ const GLUniform = {
 }
 export const GlInt = Vue.extend({
     mixins: [GLUniform],
+    render:()=>null,
     props:{
         value:{
             type:Number,
@@ -33,6 +34,7 @@ export const GlInt = Vue.extend({
 });
 export const GlFloat = Vue.extend({
     mixins: [GLUniform],
+    render:()=>null,
     props:{
         value:{
             type:Number,
@@ -47,6 +49,7 @@ export const GlFloat = Vue.extend({
 });
 export const GlVec2 = Vue.extend({
     mixins: [GLUniform],
+    render:()=>null,
     props:{
         value:{
             type:Array,
@@ -61,6 +64,7 @@ export const GlVec2 = Vue.extend({
 });
 export const GlVec3 = Vue.extend({
     mixins: [GLUniform],
+    render:()=>null,
     props:{
         value:{
             type:Array,
@@ -75,6 +79,7 @@ export const GlVec3 = Vue.extend({
 });
 export const GlVec4 = Vue.extend({
     mixins: [GLUniform],
+    render:()=>null,
     props:{
         value:{
             type:Array,
@@ -89,6 +94,7 @@ export const GlVec4 = Vue.extend({
 });
 export const GlMat2 = Vue.extend({
     mixins: [GLUniform],
+    render:()=>null,
     props:{
         value:{
             type:Array,
@@ -106,6 +112,7 @@ export const GlMat2 = Vue.extend({
 });
 export const GlMat3 = Vue.extend({
     mixins: [GLUniform],
+    render:()=>null,
     props:{
         value:{
             type:Array,
@@ -124,6 +131,7 @@ export const GlMat3 = Vue.extend({
 });
 export const GlMat4 = Vue.extend({
     mixins: [GLUniform],
+    render:()=>null,
     props:{
         value:{
             type:Array,
@@ -142,6 +150,8 @@ export const GlMat4 = Vue.extend({
     }
 });
 export const GlTexture = Vue.extend({
+    mixins: [GLUniform],
+    render:()=>null,
     props:{
         repeat:{
             type:Number,
