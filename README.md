@@ -324,12 +324,12 @@ void main(){
   `<object>textureCubeData`:用于添加立方体贴图，并包含以下数据：<br/>
   | Props      | Type  |  describe   |
   | :--------  | :-----:  |  :----------- |
-  | `front`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `back`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `left`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `right`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `top`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `bottom`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image|Video`HTML对象，最好为2^n的正方形尺寸   |
+  | `front`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
+  | `back`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
+  | `left`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
+  | `right`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
+  | `top`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
+  | `bottom`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
 
   
 
