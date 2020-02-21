@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <gl-canvas @update="glslUpdate">
+    <gl-canvas v-if="hasCanvas" @update="glslUpdate">
       <gl-program name="main" :code="shaderCode">
         <gl-float name="u_light" :value="light" />
       </gl-program>
@@ -23,6 +23,7 @@ export default Vue.extend({
     return{
       light:0,
       shaderCode:shader,
+      hasCanvas:true,
     }
   },
   methods:{

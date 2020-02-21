@@ -5,7 +5,7 @@
   "main": "dist/vue_glsl.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name vue_glsl packages/index.ts"
+    "build": "vue-cli-service build --target lib --name vue_glsl src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,8 @@
     "glsl",
     "webgl",
     "shader",
-    "fragment"
+    "fragment",
+    "opengl"
   ],
   "author": "kongxiaojian123@live.com",
   "license": "ISC",

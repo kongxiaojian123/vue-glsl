@@ -24,3 +24,4 @@ package-lock.json
 dist/*.map
 dist/*.html
 dist/*.common.js
+dist/*.umd.js
