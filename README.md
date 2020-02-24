@@ -319,7 +319,7 @@ void main(){
 
   `<HTMLImageElement>imageObj|<HTMLVideoElement>videoObj`:可以传入`Image`对象或者`video`对象（`video`对象没测，但是理论上可以的），比如展示跨域`image`时，自行传入`image`对象，效果同`imageURL`;<br/>
 
-  `<string>webGLProgramName`:当项目为多`WebGLProgram`时，`value`值可设置为`gl-program`的`name`值,可以把该`frameBuffer`引入纹理（除main`webGLProgram`外，其他`webGLProgram`均可支持添加自身作为纹理对象，原因是main`webGLProgram`要作为主`frameBuffer`渲染出来）;<br/>
+  `<string>webGLProgramName`:当项目为多`WebGLProgram`时，`value`值可设置为`gl-program`的`name`值,可以把该`frameBuffer`引入纹理（除main`webGLProgram`外，其他`webGLProgram`均可当作纹理对象，原因是main`webGLProgram`要作为主`frameBuffer`渲染出来）;<br/>
 
   `<object>textureCubeData`:用于添加立方体贴图，并包含以下数据：<br/>
   | Props      | Type  |  describe   |
