@@ -169,7 +169,10 @@ export default class ContextManager {
         this.canvasRect = canvasRect;
         this.commonCode = commonCode;
         // 绝大部分移动端都不支持 所以直接用webGL 1.0 以及增加了一些webGL2.0的方法
-        this.gl = canvas.getContext('webgl',{antialias:true});
+        this.gl = canvas.getContext('webgl',{
+            antialias:true,
+            alpha:true,
+        });
         this.setExtension();
         this.initVertex();
 
@@ -179,6 +182,8 @@ export default class ContextManager {
 
         this.gl.clearColor(0,0,0,0);
         this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL,true);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         this.initVertShader();
         this.setSize();
         this.event();
