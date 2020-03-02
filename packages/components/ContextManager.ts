@@ -553,10 +553,10 @@ export default class ContextManager {
         if(!this.gl.getShaderParameter(this.vertShader,this.gl.COMPILE_STATUS)){
             let line = 1;
             const shader = this.vertShader;
-            console.log((line+'\t|'+this.gl.getShaderSource(shader)).replace(/\n/g,()=>{
+            console.warn((line+'\t|'+this.gl.getShaderSource(shader)).replace(/\n/g,()=>{
                 return `\n${++line}\t|`;
             }));
-            throw new Error(`VertShaderError: \n\t${this.gl.getShaderInfoLog(this.vertShader)}\n`);
+            console.error(new Error(`VertShaderError: \n\t${this.gl.getShaderInfoLog(this.vertShader)}\n`));
         }
     }
     private initFragShader(programId:string){
@@ -571,10 +571,10 @@ export default class ContextManager {
         if(!this.gl.getShaderParameter(programData.fragShader,this.gl.COMPILE_STATUS)){
             let line = 1;
             const shader = programData.fragShader;
-            console.log((line+'\t|'+this.gl.getShaderSource(shader)).replace(/\n/g,()=>{
+            console.warn((line+'\t|'+this.gl.getShaderSource(shader)).replace(/\n/g,()=>{
                 return `\n${++line}\t|`;
             }));
-            throw new Error(`fragShaderError(${programId}): \n\t${this.gl.getShaderInfoLog(programData.fragShader)}`);
+            console.error(Error(`fragShaderError(${programId}): \n\t${this.gl.getShaderInfoLog(programData.fragShader)}`));
         }
     }
     private initFragCode(programData:ProgramStore):string{
@@ -592,7 +592,6 @@ export default class ContextManager {
         if(this.EXT_LOD){
             ext +='#extension GL_EXT_shader_texture_lod : enable\n';
         }
-        console.log(ext);
         code = ext+`#extension GL_OES_standard_derivatives : enable
 #extension GL_EXT_shader_texture_lod : enable
 precision highp float;
