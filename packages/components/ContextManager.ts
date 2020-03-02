@@ -150,6 +150,8 @@ export default class ContextManager {
     private timer:number;
     private commonCode:string;
     private EXT_FLOAT:number;
+    private EXT_LOD=null;
+    private EXT_DERIVATIVES=null;
     private initVertex(){
         this.vertexBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
@@ -201,8 +203,8 @@ export default class ContextManager {
         const extHalfFloat = this.gl.getExtension('OES_texture_half_float');
         this.EXT_FLOAT = extFloat&&this.gl.FLOAT||extHalfFloat&&extHalfFloat.HALF_FLOAT_OES||this.gl.UNSIGNED_BYTE;
         this.gl.getExtension('OES_texture_half_float_linear');
-        this.gl.getExtension('OES_standard_derivatives');
-        this.gl.getExtension('EXT_shader_texture_lod');
+        this.EXT_DERIVATIVES = this.gl.getExtension('OES_standard_derivatives');
+        this.EXT_LOD = this.gl.getExtension('EXT_shader_texture_lod');
     }
     public setSize(){
         this.gl.viewport(0,0,this.iResolution[0],this.iResolution[1]);
@@ -583,7 +585,15 @@ export default class ContextManager {
             uniformStr+=`uniform ${programData.uniform[key].type} ${key};\n`;
         });
         //uniform 改成varying 为了减少uniform的数量 
-        code = `#extension GL_OES_standard_derivatives : enable
+        let ext = '';
+        if(this.EXT_DERIVATIVES){
+            ext +='#ifdef GL_OES_standard_derivatives\n    #extension GL_OES_standard_derivatives : enable\n#endif\n';
+        }
+        if(this.EXT_LOD){
+            ext +='#extension GL_EXT_shader_texture_lod : enable\n';
+        }
+        console.log(ext);
+        code = ext+`#extension GL_OES_standard_derivatives : enable
 #extension GL_EXT_shader_texture_lod : enable
 precision highp float;
 precision highp int;
@@ -647,8 +657,9 @@ vec4 texture(samplerCube sampler, vec3 coord, float bias){
 vec4 texture(samplerCube sampler, vec3 coord){
     return textureCube(sampler, -coord);
 }
-#define textureLod texture2DLodEXT
-#define textureGrad texture2DGradEXT
+
+${this.EXT_LOD?"#define textureLod texture2DLodEXT\n#define textureGrad texture2DGradEXT\n":""}
+
 vec4 texelFetch(sampler2D sampler, ivec2 coord, int bias){
     return textureLod(sampler, vec2(coord)/iResolution.xy, float(bias));
 }
