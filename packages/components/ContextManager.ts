@@ -592,8 +592,7 @@ export default class ContextManager {
         if(this.EXT_LOD){
             ext +='#extension GL_EXT_shader_texture_lod : enable\n';
         }
-        code = ext+`#extension GL_OES_standard_derivatives : enable
-#extension GL_EXT_shader_texture_lod : enable
+        code = ext+`
 precision highp float;
 precision highp int;
 uniform int iFrame;
@@ -656,14 +655,14 @@ vec4 texture(samplerCube sampler, vec3 coord, float bias){
 vec4 texture(samplerCube sampler, vec3 coord){
     return textureCube(sampler, -coord);
 }
-
-${this.EXT_LOD?"#define textureLod texture2DLodEXT\n#define textureGrad texture2DGradEXT\n":""}
-
+`+(this.EXT_LOD?`
+#define textureLod texture2DLodEXT
+#define textureGrad texture2DGradEXT
 vec4 texelFetch(sampler2D sampler, ivec2 coord, int bias){
     return textureLod(sampler, vec2(coord)/iResolution.xy, float(bias));
 }
 
-`+uniformStr+ code;
+`:'')+uniformStr+ code;
         if(code.search(/void\s+main\s*\(/)<0){
             code+=`
             
