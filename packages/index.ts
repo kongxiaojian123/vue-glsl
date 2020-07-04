@@ -2,6 +2,7 @@
 import GlCanvas from './components/GlCanvas.vue';
 import GlProgram from './components/GlProgram.vue';
 import {GlInt,GlFloat,GlVec2,GlVec3,GlVec4,GlMat2,GlMat3,GlMat4,GlTexture} from './components/GlUniform';
+
 export default function(Vue){
     Vue.component('gl-canvas', GlCanvas);
     Vue.component('gl-program', GlProgram);
