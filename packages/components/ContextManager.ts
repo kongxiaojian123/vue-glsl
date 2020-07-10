@@ -43,8 +43,17 @@ void main() {
     iChannelResolution[2] = iResolution;
     iChannelResolution[3] = iResolution;
 }`;
-const requestAnimationFrame = webkitRequestAnimationFrame||window.requestAnimationFrame;
-const cancelAnimationFrame = webkitCancelAnimationFrame||window.cancelAnimationFrame;
+
+
+const requestAnimationFrame =  window.requestAnimationFrame ||
+                               (<any>window).mozRequestAnimationFrame ||
+                               window.webkitRequestAnimationFrame ||             
+                               (<any>window).msRequestAnimationFrame;
+
+
+const cancelAnimationFrame = window.cancelAnimationFrame || 
+                             (<any>window).mozCancelAnimationFrame ||
+                             window.webkitCancelAnimationFrame;
 const dayTime = 24*60*60;
 export type int = number;
 export type float = number;
