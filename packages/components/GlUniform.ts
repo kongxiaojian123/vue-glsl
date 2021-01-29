@@ -1,4 +1,5 @@
 const GLUniform = {
+    name:'GLUniform',
     props:['name'],
     watch:{
         value(val){
@@ -17,6 +18,7 @@ const GLUniform = {
     }
 }
 export const GlInt = {
+    name:'GlInt',
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -32,6 +34,7 @@ export const GlInt = {
     }
 };
 export const GlFloat = {
+    name:'GlFloat',
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -47,6 +50,7 @@ export const GlFloat = {
     }
 };
 export const GlVec2 = {
+    name:'GlVec2',
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -62,6 +66,7 @@ export const GlVec2 = {
     }
 };
 export const GlVec3 = {
+    name:'GlVec3',
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -77,6 +82,7 @@ export const GlVec3 = {
     }
 };
 export const GlVec4 = {
+    name:'GlVec4',
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -92,6 +98,7 @@ export const GlVec4 = {
     }
 };
 export const GlMat2 = {
+    name:'GlMat2',
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -110,6 +117,7 @@ export const GlMat2 = {
     }
 };
 export const GlMat3 = {
+    name:'GlMat3',
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -129,6 +137,7 @@ export const GlMat3 = {
     }
 };
 export const GlMat4 = {
+    name:'GlMat4',
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -149,6 +158,7 @@ export const GlMat4 = {
     }
 };
 export const GlTexture = {
+    name:'GlTexture',
     mixins: [GLUniform],
     render:()=>null,
     props:{
