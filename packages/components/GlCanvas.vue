@@ -6,9 +6,10 @@
 <script lang="ts">
     import ContextManager from './ContextManager';
     export default {
+        emits: ['update'],
         provide(){
             return{
-                glContext:new ContextManager(),
+                glContext:this.glContext,
             }
         },
         props:{
@@ -28,6 +29,7 @@
         data(){
             return{
                 canvasRect:null,
+                glContext:new ContextManager(),
             }
         },
         methods:{
@@ -37,7 +39,7 @@
                 canvas.width = this.width||parentElement.clientWidth;
                 canvas.height = this.height||parentElement.clientHeight;
                 this.canvasRect = canvas.getBoundingClientRect();
-                const glContext = this._provided.glContext;
+                const glContext = this.glContext;
                 glContext.init(canvas,this.canvasRect,this.code);
                 glContext.onUpdate=()=>{
                     this.$emit('update',{
@@ -55,7 +57,7 @@
             this.setSize();
         },
         unmounted(){
-            this._provided.glContext.destroy();
+            this.glContext.destroy();
         }
     };
 </script>
