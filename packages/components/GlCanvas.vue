@@ -55,7 +55,7 @@
         mounted(){
             this.setSize();
         },
-        beforeDestroy(){
+        unmounted(){
             this._provided.glContext.destroy();
         }
     });

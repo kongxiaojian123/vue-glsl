@@ -1,8 +1,9 @@
 {
   "name": "vue-glsl",
-  "version": "0.1.12",
+  "version": "1.1.12",
   "description": "A simple WebGL components for fragment shader. Can be used with Shadertoys codes",
-  "main": "dist/vue_glsl.umd.min.js",
+  "main": "packages/index.ts",
+  "module": "packages/index.ts",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name vue_glsl packages/index.ts"
@@ -12,7 +13,8 @@
     "url": "git+https://github.com/kongxiaojian123/vue-glsl.git"
   },
   "keywords": [
-    "vue",
+    "typescript",
+    "vue3",
     "glsl",
     "webgl",
     "shader",
@@ -26,14 +28,11 @@
   },
   "homepage": "https://github.com/kongxiaojian123/vue-glsl#readme",
   "dependencies": {
-    "core-js": "^3.6.4",
-    "vue": "^2.6.11"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-plugin-typescript": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
-    "typescript": "~3.7.5",
-    "vue-template-compiler": "^2.6.11"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.5",
+    "typescript": "^3.7.5"
   }
 }
