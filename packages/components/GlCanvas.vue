@@ -5,8 +5,7 @@
 </template>
 <script lang="ts">
     import ContextManager from './ContextManager';
-    import Vue from 'vue';
-    export default Vue.extend({
+    export default {
         provide(){
             return{
                 glContext:new ContextManager(),
@@ -58,7 +57,7 @@
         unmounted(){
             this._provided.glContext.destroy();
         }
-    });
+    };
 </script>
 <style scoped>
     canvas{

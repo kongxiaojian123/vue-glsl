@@ -1,4 +1,3 @@
-import Vue from 'vue';
 const GLUniform = {
     props:['name'],
     watch:{
@@ -17,7 +16,7 @@ const GLUniform = {
         this.$parent.registerUniform(this);
     }
 }
-export const GlInt = Vue.extend({
+export const GlInt = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -31,8 +30,8 @@ export const GlInt = Vue.extend({
             type:'int',
         }
     }
-});
-export const GlFloat = Vue.extend({
+};
+export const GlFloat = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -46,8 +45,8 @@ export const GlFloat = Vue.extend({
             type:'float',
         }
     }
-});
-export const GlVec2 = Vue.extend({
+};
+export const GlVec2 = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -61,8 +60,8 @@ export const GlVec2 = Vue.extend({
             type:'vec2',
         }
     }
-});
-export const GlVec3 = Vue.extend({
+};
+export const GlVec3 = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -76,8 +75,8 @@ export const GlVec3 = Vue.extend({
             type:'vec3',
         }
     }
-});
-export const GlVec4 = Vue.extend({
+};
+export const GlVec4 = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -91,8 +90,8 @@ export const GlVec4 = Vue.extend({
             type:'vec4',
         }
     }
-});
-export const GlMat2 = Vue.extend({
+};
+export const GlMat2 = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -109,8 +108,8 @@ export const GlMat2 = Vue.extend({
             type:'mat2',
         }
     }
-});
-export const GlMat3 = Vue.extend({
+};
+export const GlMat3 = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -128,8 +127,8 @@ export const GlMat3 = Vue.extend({
             type:'mat3',
         }
     }
-});
-export const GlMat4 = Vue.extend({
+};
+export const GlMat4 = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -148,8 +147,8 @@ export const GlMat4 = Vue.extend({
             type:'mat4',
         }
     }
-});
-export const GlTexture = Vue.extend({
+};
+export const GlTexture = {
     mixins: [GLUniform],
     render:()=>null,
     props:{
@@ -199,4 +198,4 @@ export const GlTexture = Vue.extend({
             if(this.type==='sampler2D') this.$parent['setUniform'](this);
         }
     }
-});
+};

@@ -5,15 +5,14 @@
 </template>
 <script lang="ts">
     import {uniformType} from './ContextManager';
-    import Vue from 'vue'
-    interface UniformVue extends Vue{
+    interface UniformVue{
         type:string;
         name:string;
         value:uniformType;
         _repeatX?:number;
         _repeatY?:number;
     }
-    export default Vue.extend({
+    export default {
         inject: ['glContext'],
         props:{
             name:{
@@ -57,5 +56,5 @@
                 }
             }
         }
-    });
+    };
 </script>
