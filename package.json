@@ -5,8 +5,6 @@
   "main": "packages/index.ts",
   "module": "packages/index.ts",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name vue_glsl packages/index.ts"
   },
   "repository": {
     "type": "git",
