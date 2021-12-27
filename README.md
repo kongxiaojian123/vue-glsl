@@ -34,7 +34,7 @@ Instanciate and tell Vue about the plugin
 
 ```javascript
 import {createApp} from 'vue'
-import glsl from '../packages/index'
+import glsl from 'vue-glsl'
 import App from './App.vue'
 createApp(App).use(glsl).mount('#app');
 ```
@@ -67,7 +67,14 @@ export default {
     }
   },
   methods:{
-    glslUpdate(tickData){
+    glslUpdate(tickData: {
+      iResolution: number[],
+      iTime: number,
+      iTimeDelta: number,
+      iFrame: number,
+      iMouse: number[],
+      iDate: number[],
+    }){
       //console.log(tickData);
       this.light = (Math.sin(tickData.iTime)+1)/2;
     }
@@ -112,21 +119,19 @@ export default {
   <gl-canvas @update="canvasUpdate">
     <!-- ... -->
   </gl-canvas>
-  <script>
+  <script lang="ts">
     export default{
       // ...
       methods:{
-        canvasUpdate(tickData){
-          /*
-            tickData ==> {
-              iResolution;           // viewport resolution (in pixels)
-              iTime;                 // shader playback time (in seconds)
-              iTimeDelta;            // render time (in seconds)
-              iFrame;                // shader playback frame
-              iMouse;                // mouse pixel coords. xy: current (if MLB down), zw: click
-              iDate;                 // (year, month, day, time in seconds)
-            }
-          */
+        canvasUpdate(tickData:{
+          iResolution :number[];  // viewport resolution (in pixels)
+          iTime       :number;    // shader playback time (in seconds)
+          iTimeDelta  :number;    // render time (in seconds)
+          iFrame      :number;    // shader playback frame
+          iMouse      :number[];  // mouse pixel coords. xy: current (if MLB down), zw: click
+          iDate       :number[];  // (year, month, day, time in seconds)
+        }){
+          // ...
         }
       }
     }
