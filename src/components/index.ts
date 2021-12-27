@@ -1,9 +1,9 @@
 
-import GlCanvas from './components/GlCanvas.vue';
-import GlProgram from './components/GlProgram.vue';
-import {GlInt,GlFloat,GlVec2,GlVec3,GlVec4,GlMat2,GlMat3,GlMat4,GlTexture} from './components/GlUniform';
-
-export default function(Vue){
+import GlCanvas from './GlCanvas.vue';
+import GlProgram from './GlProgram.vue';
+import {GlInt,GlFloat,GlVec2,GlVec3,GlVec4,GlMat2,GlMat3,GlMat4,GlTexture} from './GlUniform';
+import { App } from 'vue'
+export default function(Vue:App){
     Vue.component('gl-canvas', GlCanvas);
     Vue.component('gl-program', GlProgram);
     Vue.component('gl-int', GlInt);

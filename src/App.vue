@@ -9,13 +9,15 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 const shader=`
 void main() {
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
     vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
     gl_FragColor = vec4(col*u_light,1.0);
 }`;
-export default {
+export default defineComponent({
+  name: 'App',
   data(){
     return{
       light:0,
@@ -24,12 +26,18 @@ export default {
     }
   },
   methods:{
-    glslUpdate(tickData){
-      //console.log(tickData);
+    glslUpdate(tickData:{
+      iResolution:number[],
+      iTime:number,
+      iTimeDelta:number,
+      iFrame:number,
+      iMouse:number[],
+      iDate:number[],
+    }){
       this.light = (Math.sin(tickData.iTime)+1)/2;
     }
   }
-};
+});
 </script>
 
 <style>

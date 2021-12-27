@@ -2,19 +2,23 @@ const GLUniform = {
     name:'GLUniform',
     props:['name'],
     watch:{
-        value(val){
+        value(val:any){
+            // @ts-ignore
             if(this.type==='samplerCube'){
                 const samplerType = ['front','back','left','right','top','bottom'];
                 const errorStr = JSON.stringify(samplerType);
                 if(Object.keys(val).sort().join('|').indexOf(samplerType.sort().join('|'))<0){
-                    throw new Error(`\nType ${this.type}(${this.name}) value must contain:\n\t${errorStr}\n`);
+                  // @ts-ignore
+                  throw new Error(`\nType ${this.type}(${this.name}) value must contain:\n\t${errorStr}\n`);
                 }
             }
+            // @ts-ignore
             this.$parent.setUniform(this);
         }
     },
     created(){
-        this.$parent.registerUniform(this);
+      // @ts-ignore
+      this.$parent.registerUniform(this);
     }
 }
 export const GlInt = {
@@ -180,32 +184,41 @@ export const GlTexture = {
     },
     computed:{
         type(){
-            if(typeof this.value === 'string'||this.value instanceof HTMLElement){
-                return 'sampler2D';
-            }
-            return 'samplerCube';
+          // @ts-ignore
+          if(typeof this.value === 'string' || this.value instanceof HTMLElement){
+              return 'sampler2D';
+          }
+          return 'samplerCube';
         },
         _repeatX():number{
-            let repeat = this.repeatX;
-            if(this.repeat>=0){
-                repeat = this.repeat;
-            }
-            return Math.max(0,Math.min(2,repeat));
+          // @ts-ignore
+          let repeat = this.repeatX;
+          // @ts-ignore
+          if(this.repeat>=0){
+            // @ts-ignore
+            repeat = this.repeat;
+          }
+          return Math.max(0,Math.min(2,repeat));
         },
         _repeatY():number{
-            let repeat = this.repeatY;
-            if(this.repeat>=0){
-                repeat = this.repeat;
-            }
-            return Math.max(0,Math.min(2,repeat));
+          // @ts-ignore
+          let repeat = this.repeatY;
+          // @ts-ignore
+          if(this.repeat>=0){
+            // @ts-ignore
+            repeat = this.repeat;
+          }
+          return Math.max(0,Math.min(2,repeat));
         }
     },
     watch:{
         _repeatX(){
-            if(this.type==='sampler2D') this.$parent['setUniform'](this);
+          // @ts-ignore
+          if(this.type==='sampler2D') this.$parent['setUniform'](this);
         },
         _repeatY(){
-            if(this.type==='sampler2D') this.$parent['setUniform'](this);
+          // @ts-ignore
+          if(this.type==='sampler2D') this.$parent['setUniform'](this);
         }
     }
 };

@@ -47,13 +47,14 @@ void main() {
 
 const requestAnimationFrame =  window.requestAnimationFrame ||
                                (<any>window).mozRequestAnimationFrame ||
-                               window.webkitRequestAnimationFrame ||             
+                               (<any>window).webkitRequestAnimationFrame ||
                                (<any>window).msRequestAnimationFrame;
 
 
-const cancelAnimationFrame = window.cancelAnimationFrame || 
+const cancelAnimationFrame = window.cancelAnimationFrame ||
                              (<any>window).mozCancelAnimationFrame ||
-                             window.webkitCancelAnimationFrame;
+                             (<any>window).webkitCancelAnimationFrame ||
+                             (<any>window).msCancelAnimationFrame;
 const dayTime = 24*60*60;
 export type int = number;
 export type float = number;
@@ -99,70 +100,70 @@ export type uniformType = int|float|vec2|vec3|vec4|mat2|mat3|mat4|sampler2D|samp
 export interface ProgramStore{
     uniform:{
         [key:string]:{
-            id:WebGLUniformLocation,
+            id:WebGLUniformLocation|null,
             type:string,
             value:uniformType,
             textureData?:{
                 id:GLenum,
                 repeatX:number,
                 repeatY:number,
-                texture:WebGLTexture,
+                texture:WebGLTexture|null,
                 image?:samplerEle,
                 imageCube?:{
-                    front:samplerEle,
-                    back:samplerEle,
-                    left:samplerEle,
-                    right:samplerEle,
-                    top:samplerEle,
-                    bottom:samplerEle,
+                    front:samplerEle|null,
+                    back:samplerEle|null,
+                    left:samplerEle|null,
+                    right:samplerEle|null,
+                    top:samplerEle|null,
+                    bottom:samplerEle|null,
                 }
             }
         }
     },
     defaultLocation:{
-        iResolution:WebGLUniformLocation,
-        iTime:WebGLUniformLocation,
-        iTimeDelta:WebGLUniformLocation,
-        iFrame:WebGLUniformLocation,
-        iMouse:WebGLUniformLocation,
-        iDate:WebGLUniformLocation,
-        aPosition:GLint,
+        iResolution:WebGLUniformLocation|null,
+        iTime:WebGLUniformLocation|null,
+        iTimeDelta:WebGLUniformLocation|null,
+        iFrame:WebGLUniformLocation|null,
+        iMouse:WebGLUniformLocation|null,
+        iDate:WebGLUniformLocation|null,
+        aPosition:GLint|null,
     }
-    fragShader:WebGLShader,
+    fragShader:WebGLShader|null,
     fragCode:string,
-    program:WebGLProgram,
+    program:WebGLProgram|null,
     textureLen:number,
     frameBuffer?:WebGLFramebuffer,
-    
+
     frameTexture?:WebGLTexture,
     cacheTexture?:WebGLTexture,
 }
 export default class ContextManager {
-    private canvas:HTMLCanvasElement;
-    private canvasRect:DOMRect;
-    private gl:WebGLRenderingContext|WebGL2RenderingContext;
-    private programStore:{[key:string]:ProgramStore};
-    private _readyResolve:Function;
+    private canvas!:HTMLCanvasElement;
+    private canvasRect!:DOMRect;
+    private gl!:WebGLRenderingContext|WebGL2RenderingContext;
+    private programStore!:{[key:string]:ProgramStore}|null;
+    private _readyResolve!:Function;
     private ready=new Promise(resolve=>{this._readyResolve=resolve});
 
-    public onUpdate:Function;
-    public iResolution:vec3;
-    public iTime:number;
-    public iTimeDelta:number;
-    public iFrame:number;
-    public iDate:vec4;
-    public iMouse:vec4;
+    public onUpdate!:Function;
+    public iResolution!:vec3;
+    public iTime!:number;
+    public iTimeDelta!:number;
+    public iFrame!:number;
+    public iDate!:vec4;
+    public iMouse!:vec4;
 
-    private vertexBuffer:WebGLBuffer;
-    private vertShader:WebGLShader;
-    private initTime:number;
-    private timer:number;
-    private commonCode:string;
-    private EXT_FLOAT:number;
-    private EXT_LOD=null;
-    private EXT_DERIVATIVES=null;
+    private vertexBuffer!:WebGLBuffer|null;
+    private vertShader!:WebGLShader;
+    private initTime!:number;
+    private timer!:number;
+    private commonCode!:string;
+    private EXT_FLOAT!:number;
+    private EXT_LOD:EXT_shader_texture_lod|null=null;
+    private EXT_DERIVATIVES:OES_standard_derivatives|null=null;
     private initVertex(){
-        this.vertexBuffer = this.gl.createBuffer();
+        this.vertexBuffer = this.gl.createBuffer() as WebGLBuffer;
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
         this.gl.bufferData(
             this.gl.ARRAY_BUFFER,
@@ -183,7 +184,7 @@ export default class ContextManager {
         this.gl = canvas.getContext('webgl',{
             antialias:true,
             alpha:true,
-        });
+        }) as WebGLRenderingContext;
         this.setExtension();
         this.initVertex();
 
@@ -274,21 +275,21 @@ export default class ContextManager {
         });
     }
     public render(){
-        Object.keys(this.programStore).forEach(programId=>{
-            const programData = this.programStore[programId];
+        Object.keys(this.programStore!).forEach(programId=>{
+            const programData = this.programStore![programId];
             const program = programData.program;
             if(!program) return;
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER,programData.frameBuffer||null);
             if(programId!=='main'){
                 [programData.frameTexture,programData.cacheTexture] = [programData.cacheTexture,programData.frameTexture];
-                this.gl.bindTexture(this.gl.TEXTURE_2D,programData.frameTexture);
-                this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, programData.frameTexture, 0);
+                this.gl.bindTexture(this.gl.TEXTURE_2D,programData.frameTexture!);
+                this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, programData.frameTexture!, 0);
             }
             this.gl.useProgram(program);
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
             const aPosition = programData.defaultLocation.aPosition;
-            this.gl.vertexAttribPointer(aPosition,2,this.gl.FLOAT,false,0,0);
-            this.gl.enableVertexAttribArray(aPosition);
+            this.gl.vertexAttribPointer(aPosition!,2,this.gl.FLOAT,false,0,0);
+            this.gl.enableVertexAttribArray(aPosition!);
             this.gl.uniform3fv(programData.defaultLocation.iResolution,this.iResolution);
             this.gl.uniform1f(programData.defaultLocation.iTime,this.iTime);
             this.gl.uniform1f(programData.defaultLocation.iTimeDelta,this.iTimeDelta);
@@ -329,11 +330,11 @@ export default class ContextManager {
                             this.gl.uniform1i(uniform.id,textureData.id);
                             if(textureData.image){
                                 this.gl.bindTexture(this.gl.TEXTURE_2D,textureData.texture);
-                            }else if(this.programStore[<string>uniform.value]){
+                            }else if(this.programStore![<string>uniform.value]){
                                 //framebuffer
                                 const repeatMode = [this.gl.CLAMP_TO_EDGE,this.gl.REPEAT,this.gl.MIRRORED_REPEAT];
-                                const texture = this.programStore[<string>uniform.value].cacheTexture;
-                                this.gl.bindTexture(this.gl.TEXTURE_2D,texture);
+                                const texture = this.programStore![<string>uniform.value].cacheTexture;
+                                this.gl.bindTexture(this.gl.TEXTURE_2D,texture!);
                                 this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_WRAP_S,repeatMode[textureData.repeatX]);
                                 this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_WRAP_T,repeatMode[textureData.repeatY]);
                             }
@@ -359,7 +360,7 @@ export default class ContextManager {
     }
     public destroy(){
         cancelAnimationFrame(this.timer);
-        Object.values(this.programStore).forEach(programData=>{
+        Object.values(this.programStore!).forEach(programData=>{
             this.gl.deleteProgram(programData.program);
             this.gl.deleteShader(programData.fragShader);
             programData.fragShader = null;
@@ -372,7 +373,7 @@ export default class ContextManager {
         this.vertexBuffer = null;
     }
     public initUniform(programId:string,name:string,type:string,value:uniformType,repeatX?:number,repeatY?:number){
-        const uniformList = this.programStore[programId].uniform;
+        const uniformList = this.programStore![programId].uniform;
         if(uniformList[name]){
             throw new Error(`Multiple registration uniform: ${name}`);
         }else{
@@ -383,15 +384,15 @@ export default class ContextManager {
             };
             if(type==='sampler2D'){
                 uniformList[name].textureData={
-                    id:this.programStore[programId].textureLen++,
+                    id:this.programStore![programId].textureLen++,
                     texture:null,
-                    repeatX:repeatX,
-                    repeatY:repeatY,
+                    repeatX:repeatX!,
+                    repeatY:repeatY!,
                 }
             }
             if(type==='samplerCube'){
                 uniformList[name].textureData={
-                    id:this.programStore[programId].textureLen++,
+                    id:this.programStore![programId].textureLen++,
                     texture:null,
                     repeatX:0,
                     repeatY:0,
@@ -416,7 +417,7 @@ export default class ContextManager {
         this.gl.texParameteri(textureType,this.gl.TEXTURE_WRAP_T,repeatY);
     }
     public setUniform(programId:string,name:string,value:uniformType,repeatX?:number,repeatY?:number){
-        const programData = this.programStore[programId];
+        const programData = this.programStore![programId];
         if(!programData.program) return;
         const uniform = programData.uniform[name];
         uniform.value = value;
@@ -427,48 +428,48 @@ export default class ContextManager {
         if(uniform.type==='sampler2D'){
             const textureData = uniform.textureData;
             const repeatMode = [this.gl.CLAMP_TO_EDGE,this.gl.REPEAT,this.gl.MIRRORED_REPEAT];
-            if(!textureData.texture){
-                textureData.texture = this.gl.createTexture();
+            if(!textureData!.texture){
+                textureData!.texture = this.gl.createTexture();
             }
             if(typeof uniform.value === 'string' && (<string>uniform.value).search(/\.(jpg|png)$|^data\:image/)>=0){
-                if((!textureData.image)||((<HTMLImageElement>textureData.image).src||'').indexOf(<string>uniform.value)<0){
-                    textureData.image = new Image();
-                    textureData.image.onload = ()=>{
-                        if(repeatX!==undefined) textureData.repeatX = repeatX;
-                        if(repeatY!==undefined) textureData.repeatY = repeatY;
+                if((!textureData!.image)||((<HTMLImageElement>textureData!.image).src||'').indexOf(<string>uniform.value)<0){
+                    textureData!.image = new Image();
+                    textureData!.image.onload = ()=>{
+                        if(repeatX!==undefined) textureData!.repeatX = repeatX;
+                        if(repeatY!==undefined) textureData!.repeatY = repeatY;
                         this.initTexture(
-                            programData.program,
-                            textureData.texture,
-                            textureData.image,
-                            textureData.id,
+                            programData.program!,
+                            textureData!.texture!,
+                            textureData!.image!,
+                            textureData!.id,
                             this.gl.TEXTURE_2D,
                             this.gl.TEXTURE_2D,
-                            repeatMode[textureData.repeatX],
-                            repeatMode[textureData.repeatY]
+                            repeatMode[textureData!.repeatX],
+                            repeatMode[textureData!.repeatY]
                         );
                     }
-                    textureData.image.src = <string>uniform.value;
+                    textureData!.image.src = <string>uniform.value;
                 }
             }else if(uniform.value instanceof HTMLElement){
-                textureData.image = <samplerEle>value;
-                if(repeatX!==undefined) textureData.repeatX = repeatX;
-                if(repeatY!==undefined) textureData.repeatY = repeatY;
+                textureData!.image = <samplerEle>value;
+                if(repeatX!==undefined) textureData!.repeatX = repeatX;
+                if(repeatY!==undefined) textureData!.repeatY = repeatY;
                 this.initTexture(
                     programData.program,
-                    textureData.texture,
-                    textureData.image,
-                    textureData.id,
+                    textureData!.texture!,
+                    textureData!.image,
+                    textureData!.id,
                     this.gl.TEXTURE_2D,
                     this.gl.TEXTURE_2D,
-                    repeatMode[textureData.repeatX],
-                    repeatMode[textureData.repeatY]
+                    repeatMode[textureData!.repeatX],
+                    repeatMode[textureData!.repeatY]
                 );
             }
-            if(repeatX!==undefined&&repeatY!==undefined&&(textureData.repeatX !== repeatX||textureData.repeatY !== repeatY)){
-                textureData.repeatX = repeatX;
-                textureData.repeatY = repeatY;
-                this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_WRAP_S,repeatMode[textureData.repeatX]);
-                this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_WRAP_T,repeatMode[textureData.repeatY]);
+            if(repeatX!==undefined&&repeatY!==undefined&&(textureData!.repeatX !== repeatX||textureData!.repeatY !== repeatY)){
+                textureData!.repeatX = repeatX;
+                textureData!.repeatY = repeatY;
+                this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_WRAP_S,repeatMode[textureData!.repeatX]);
+                this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_WRAP_T,repeatMode[textureData!.repeatY]);
             }
         }
         if(uniform.type==='samplerCube'){
@@ -482,11 +483,11 @@ export default class ContextManager {
                     bottom:this.gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
                 };
                 const textureData = uniform.textureData;
-                if(!textureData.texture){
-                    textureData.texture = this.gl.createTexture();
+                if(!textureData!.texture){
+                    textureData!.texture = this.gl.createTexture();
                 }
-                if(!textureData.imageCube){
-                    textureData.imageCube = {
+                if(!textureData!.imageCube){
+                    textureData!.imageCube = {
                         front:null,
                         back:null,
                         left:null,
@@ -495,35 +496,35 @@ export default class ContextManager {
                         bottom:null,
                     };
                 }
-                Object.keys(textureData.imageCube).forEach(imgId=>{
-                    if(typeof uniform.value[imgId] === 'string'){
-                        textureData.imageCube[imgId] = new Image();
-                        const image = textureData.imageCube[imgId];
-                        image.onload=()=>{
+                Object.keys(textureData!.imageCube).forEach((imgId)=>{
+                    if(typeof (uniform.value as samplerCube)[imgId as 'front'] === 'string'){
+                        textureData!.imageCube![imgId as 'front'] = new Image();
+                        const image = textureData!.imageCube![imgId as 'front'];
+                        image!.onload=()=>{
                             this.initTexture(
-                                programData.program,
-                                textureData.texture,
-                                image,
-                                textureData.id,
+                                programData.program!,
+                                textureData!.texture!,
+                                image!,
+                                textureData!.id,
                                 this.gl.TEXTURE_CUBE_MAP,
-                                textureCubeTarget[imgId],
-                                repeatMode[textureData.repeatX],
-                                repeatMode[textureData.repeatY]
+                                textureCubeTarget[imgId as 'front'],
+                                repeatMode[textureData!.repeatX],
+                                repeatMode[textureData!.repeatY]
                             );
                         }
-                        image.src = uniform.value[imgId];
+                        (image as HTMLImageElement).src = (uniform.value as samplerCube)[imgId as 'front'] as string;
                     }else{
-                        textureData.imageCube[imgId] = uniform.value[imgId];
-                        const image = textureData.imageCube[imgId];
+                        textureData!.imageCube![imgId as 'front'] = (uniform.value as samplerCube)[imgId as 'front'] as HTMLImageElement;
+                        const image = textureData!.imageCube![imgId as 'front'];
                         this.initTexture(
-                            programData.program,
-                            textureData.texture,
-                            image,
-                            textureData.id,
+                            programData.program!,
+                            textureData!.texture!,
+                            image!,
+                            textureData!.id,
                             this.gl.TEXTURE_CUBE_MAP,
-                            textureCubeTarget[imgId],
-                            repeatMode[textureData.repeatX],
-                            repeatMode[textureData.repeatY]
+                            textureCubeTarget[imgId as 'front'],
+                            repeatMode[textureData!.repeatX],
+                            repeatMode[textureData!.repeatY]
                         );
                     }
                 });
@@ -556,7 +557,7 @@ export default class ContextManager {
         if(this.vertShader){
             this.gl.deleteShader(this.vertShader);
         }
-        this.vertShader = this.gl.createShader(this.gl.VERTEX_SHADER);
+        this.vertShader = this.gl.createShader(this.gl.VERTEX_SHADER) as WebGLShader;
         this.gl.shaderSource(this.vertShader,VERTEX_SOURCE);
         this.gl.compileShader(this.vertShader);
         if(!this.gl.getShaderParameter(this.vertShader,this.gl.COMPILE_STATUS)){
@@ -569,18 +570,18 @@ export default class ContextManager {
         }
     }
     private initFragShader(programId:string){
-        const programData = this.programStore[programId];
+        const programData = this.programStore![programId];
         if(programData.fragShader){
             this.gl.deleteShader(programData.fragShader);
         }
-        programData.fragShader = this.gl.createShader(this.gl.FRAGMENT_SHADER);
+        programData.fragShader = this.gl.createShader(this.gl.FRAGMENT_SHADER) as WebGLShader;
         const fragCode = this.initFragCode(programData);
         this.gl.shaderSource(programData.fragShader,fragCode);
         this.gl.compileShader(programData.fragShader);
         if(!this.gl.getShaderParameter(programData.fragShader,this.gl.COMPILE_STATUS)){
             let line = 1;
             const shader = programData.fragShader;
-            console.warn((line+'\t|'+this.gl.getShaderSource(shader)).replace(/\n/g,()=>{
+            console.warn((line+'\t|'+this.gl.getShaderSource(shader!)).replace(/\n/g,()=>{
                 return `\n${++line}\t|`;
             }));
             console.error(Error(`fragShaderError(${programId}): \n\t${this.gl.getShaderInfoLog(programData.fragShader)}`));
@@ -593,7 +594,7 @@ export default class ContextManager {
         Object.keys(programData.uniform).forEach(key=>{
             uniformStr+=`uniform ${programData.uniform[key].type} ${key};\n`;
         });
-        //uniform 改成varying 为了减少uniform的数量 
+        //uniform 改成varying 为了减少uniform的数量
         let ext = '';
         if(this.EXT_DERIVATIVES){
             ext +='#ifdef GL_OES_standard_derivatives\n    #extension GL_OES_standard_derivatives : enable\n#endif\n';
@@ -674,7 +675,7 @@ vec4 texelFetch(sampler2D sampler, ivec2 coord, int bias){
 `:'')+uniformStr+ code;
         if(code.search(/void\s+main\s*\(/)<0){
             code+=`
-            
+
 void main(){
     gl_FragColor = vec4(1);
     mainImage(gl_FragColor, gl_FragCoord.xy);
@@ -685,21 +686,21 @@ void main(){
     }
     public async updateProgram(programId:string){
         await this.ready;
-        const programData = this.programStore[programId];
+        const programData = this.programStore![programId];
         if(programData.program){
             this.gl.deleteProgram(programData.program);
         }
         this.initFragShader(programId);
-        const program = this.gl.createProgram();
+        const program = this.gl.createProgram() as WebGLProgram;
         programData.program = program;
         this.gl.attachShader(program,this.vertShader);
-        this.gl.attachShader(program,programData.fragShader);
+        this.gl.attachShader(program,programData.fragShader!);
         this.gl.linkProgram(program);
         if(!this.gl.getProgramParameter(program,this.gl.LINK_STATUS)){
             throw new Error(`ProgramError(${programId}): \n\t${this.gl.getProgramInfoLog(program)}`);
         }
         if(programId!='main'){
-            programData.frameTexture = this.gl.createTexture();
+            programData.frameTexture = this.gl.createTexture() as WebGLTexture;
             this.gl.bindTexture(this.gl.TEXTURE_2D, programData.frameTexture);
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA,
                 this.iResolution[0], this.iResolution[1], 0,
@@ -707,15 +708,15 @@ void main(){
             this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_MIN_FILTER,this.gl.NEAREST);
             this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_MAG_FILTER,this.gl.NEAREST);
 
-            programData.cacheTexture = this.gl.createTexture();
+            programData.cacheTexture = this.gl.createTexture() as WebGLTexture;
             this.gl.bindTexture(this.gl.TEXTURE_2D, programData.cacheTexture);
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA,
                 this.iResolution[0], this.iResolution[1], 0,
                 this.gl.RGBA, this.EXT_FLOAT, null);
             this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_MIN_FILTER,this.gl.NEAREST);
             this.gl.texParameteri(this.gl.TEXTURE_2D,this.gl.TEXTURE_MAG_FILTER,this.gl.NEAREST);
-            
-            programData.frameBuffer = this.gl.createFramebuffer();
+
+            programData.frameBuffer = this.gl.createFramebuffer() as WebGLFramebuffer;
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, programData.frameBuffer);
         }
         Object.keys(programData.uniform).forEach(key=>{
@@ -724,10 +725,10 @@ void main(){
         Object.keys(programData.defaultLocation).forEach(key=>{
             switch(key){
                 case 'aPosition':
-                    programData.defaultLocation[key]=this.gl.getAttribLocation(program,key);
+                    programData.defaultLocation[key]=this.gl.getAttribLocation(program!,key);
                 break;
                 default:
-                    programData.defaultLocation[key]=this.gl.getUniformLocation(program,key);
+                    programData.defaultLocation[key as 'iResolution']=this.gl.getUniformLocation(program!,key);
             }
         });
     }
