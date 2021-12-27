@@ -320,7 +320,7 @@ void main(){
   | Props      | Type  |  describe   |
   | :--------  | :-----:  |  :----------- |
   | `name`    | `string`   |   `WebGLUniform`名字   |
-  | `value`    | `imageURL\|imageObj\|videoObj\|webGLProgramName\|textureCubeData`   |  用于传入当前`WebGLProgram`纹理的数据   |
+  | `value`    | `imageURL\|imageObj\|videoObj\|canvasObj\|webGLProgramName\|textureCubeData`   |  用于传入当前`WebGLProgram`纹理的数据   |
   | `repeat`    | `0\|1\|2`   |   可以省略，2d纹理有效,0(默认):`gl.CLAMP_TO_EDGE` 1:`gl.REPEAT` 2:`gl.MIRRORED_REPEAT`   |
   | `repeatX`    | `0\|1\|2`   |   同上，但是若有`repeat`会被其覆盖   |
   | `repeatY`    | `0\|1\|2`   |   同上，但是若有`repeat`会被其覆盖    |
@@ -331,19 +331,19 @@ void main(){
 
   `<string>imageURL`:本地图片链接地址。<br/>
 
-  `<HTMLImageElement>imageObj|<HTMLVideoElement>videoObj`:可以传入`Image`对象或者`video`对象（`video`对象没测，但是理论上可以的），比如展示跨域`image`时，自行传入`image`对象，效果同`imageURL`;<br/>
+  `<HTMLImageElement>imageObj|<HTMLVideoElement>videoObj|<HTMLCanvasElement>canvasObj`:可以传入`Image\|Video\|Canvas`对象（`video`对象没测，但是理论上可以的），比如展示跨域`image`时，自行传入`image`对象，效果同`imageURL`;<br/>
 
   `<string>webGLProgramName`:当项目为多`WebGLProgram`时，`value`值可设置为`gl-program`的`name`值,可以把该`frameBuffer`引入纹理（除main`webGLProgram`外，其他`webGLProgram`均可当作纹理对象，原因是main`webGLProgram`要作为主`frameBuffer`渲染出来）;<br/>
 
   `<object>textureCubeData`:用于添加立方体贴图，并包含以下数据：<br/>
   | Props      | Type  |  describe   |
   | :--------  | :-----:  |  :----------- |
-  | `front`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `back`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `left`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `right`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `top`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
-  | `bottom`    | `imageURL\|imageObj\|videoObj`   |   本地图片链接地址或者`Image\|Video`HTML对象，最好为2^n的正方形尺寸   |
+  | `front`    | `imageURL\|imageObj\|videoObj\|canvasObj`   |   本地图片链接地址或者`Image\|Video\|Canvas`HTML对象，最好为2^n的正方形尺寸   |
+  | `back`    | `imageURL\|imageObj\|videoObj\|canvasObj`   |   本地图片链接地址或者`Image\|Video\|Canvas`HTML对象，最好为2^n的正方形尺寸   |
+  | `left`    | `imageURL\|imageObj\|videoObj\|canvasObj`   |   本地图片链接地址或者`Image\|Video\|Canvas`HTML对象，最好为2^n的正方形尺寸   |
+  | `right`    | `imageURL\|imageObj\|videoObj\|canvasObj`   |   本地图片链接地址或者`Image\|Video\|Canvas`HTML对象，最好为2^n的正方形尺寸   |
+  | `top`    | `imageURL\|imageObj\|videoObj\|canvasObj`   |   本地图片链接地址或者`Image\|Video\|Canvas`HTML对象，最好为2^n的正方形尺寸   |
+  | `bottom`    | `imageURL\|imageObj\|videoObj\|canvasObj`   |   本地图片链接地址或者`Image\|Video\|Canvas`HTML对象，最好为2^n的正方形尺寸   |
 
 
 
