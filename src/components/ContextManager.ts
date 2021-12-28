@@ -158,7 +158,20 @@ export default class ContextManager {
     private vertShader!:WebGLShader;
     private initTime!:number;
     private timer!:number;
-    private commonCode!:string;
+    private _commonCode='';
+    public get commonCode(){
+      return this._commonCode;
+    };
+    public set commonCode(val:string){
+      if(this._commonCode!==val){
+        this._commonCode = val;
+        if(this.programStore){
+          Object.keys(this.programStore).forEach(key=>{
+            this.updateProgram(key);
+          });
+        }
+      }
+    };
     private EXT_FLOAT!:number;
     private EXT_LOD:EXT_shader_texture_lod|null=null;
     private EXT_DERIVATIVES:OES_standard_derivatives|null=null;
@@ -684,11 +697,14 @@ void main(){
         }
         return code;
     }
-    public async updateProgram(programId:string){
+    public async updateProgram(programId:string,fragCode?:string){
         await this.ready;
         const programData = this.programStore![programId];
         if(programData.program){
             this.gl.deleteProgram(programData.program);
+        }
+        if(fragCode){
+          programData.fragCode = fragCode;
         }
         this.initFragShader(programId);
         const program = this.gl.createProgram() as WebGLProgram;
@@ -720,7 +736,11 @@ void main(){
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, programData.frameBuffer);
         }
         Object.keys(programData.uniform).forEach(key=>{
-            this.setUniform(programId,key,programData.uniform[key].value);
+          const uniform = programData.uniform[key];
+          if(!programData.program) return;
+          this.gl.useProgram(programData.program);
+          uniform.id=this.gl.getUniformLocation(programData.program,key);
+          this.setUniform(programId,key,programData.uniform[key].value);
         });
         Object.keys(programData.defaultLocation).forEach(key=>{
             switch(key){

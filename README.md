@@ -1,6 +1,6 @@
 # vue-glsl
 
-vue-glsl 是一个基于vue的片段着色器组件,使用的是webGL 1.0(移动端webGL 2.0不支持),并支持多webGLProgram项目。
+vue-glsl 是一个基于vue3的片段着色器组件,使用的是webGL 1.0(移动端webGL 2.0不支持),并支持多webGLProgram项目。
 
 组件支持[shadertoyCode](https://www.shadertoy.com/);
 

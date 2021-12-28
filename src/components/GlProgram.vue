@@ -35,6 +35,11 @@ export default defineComponent({
         (this.glContext as ContextManager).initProgram(this.name,this.code);
         this.updateProgram();
     },
+    watch:{
+      code(val){
+        this.updateProgram(val);
+      }
+    },
     methods:{
         registerUniform(uniformVue:UniformVue){
             clearTimeout(this.timer!);
@@ -47,10 +52,10 @@ export default defineComponent({
             }
             this.updateProgram();
         },
-        updateProgram(){
+        updateProgram(code?:string){
             this.timer = setTimeout(()=>{
                 // @ts-ignore
-                (this.glContext as ContextManager).updateProgram(this.name);
+                (this.glContext as ContextManager).updateProgram(this.name,code);
             },0);
         },
         setUniform(uniformVue:UniformVue){

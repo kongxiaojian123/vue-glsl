@@ -15,17 +15,23 @@ export default defineComponent({
     },
     props:{
         width:{
-            type:Number,
+            type:[String, Number],
             default:null,
         },
         height:{
-            type:Number,
+            type:[String, Number],
             default:null,
         },
         code:{
             type:String,
             default:'',
         }
+    },
+    watch:{
+      code(val:string){
+        this.glContext.commonCode = val;
+        console.log(this);
+      }
     },
     data(){
       return{
@@ -37,8 +43,8 @@ export default defineComponent({
         setSize(){
             const canvas = <HTMLCanvasElement>this.$refs.canvas;
             const parentElement = <HTMLElement>canvas.parentElement;
-            canvas.width = this.width||parentElement.clientWidth;
-            canvas.height = this.height||parentElement.clientHeight;
+            canvas.width = (isNaN(+this.width)?'':+this.width)||parentElement.clientWidth;
+            canvas.height = (isNaN(+this.height)?'':+this.height)||parentElement.clientHeight;
             this.canvasRect = canvas.getBoundingClientRect();
             const glContext = this.glContext;
             glContext.init(canvas,this.canvasRect,this.code);
@@ -55,7 +61,7 @@ export default defineComponent({
         }
     },
     mounted(){
-        this.setSize();
+      this.setSize();
     },
     unmounted(){
         this.glContext.destroy();
