@@ -384,6 +384,8 @@ export default class ContextManager {
         this.vertexBuffer = null;
         this.gl.deleteShader(this.vertShader);
         this.vertexBuffer = null;
+        const WEBGL_lose_context = this.gl.getExtension( 'WEBGL_lose_context' );
+        if ( WEBGL_lose_context ) WEBGL_lose_context.loseContext();
     }
     public initUniform(programId:string,name:string,type:string,value:uniformType,repeatX?:number,repeatY?:number){
         const uniformList = this.programStore![programId].uniform;
