@@ -343,6 +343,9 @@ export default class ContextManager {
                             this.gl.uniform1i(uniform.id,textureData.id);
                             if(textureData.image){
                                 this.gl.bindTexture(this.gl.TEXTURE_2D,textureData.texture);
+                                if(!(textureData.image instanceof HTMLImageElement)){
+                                  this.gl.texImage2D(this.gl.TEXTURE_2D,0,this.gl.RGBA,this.gl.RGBA,this.gl.UNSIGNED_BYTE,textureData.image);
+                                }
                             }else if(this.programStore![<string>uniform.value]){
                                 //framebuffer
                                 const repeatMode = [this.gl.CLAMP_TO_EDGE,this.gl.REPEAT,this.gl.MIRRORED_REPEAT];
@@ -360,6 +363,23 @@ export default class ContextManager {
                             this.gl.activeTexture(this.gl.TEXTURE0+textureData.id);
                             this.gl.uniform1i(uniform.id,textureData.id);
                             this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP,textureData.texture);
+                            if(textureData.imageCube){
+                              const textureCubeTarget={
+                                front:this.gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+                                back:this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
+                                left:this.gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+                                right:this.gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+                                top:this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+                                bottom:this.gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+                              };
+                              Object.keys(textureData.imageCube).forEach((imgKey)=>{
+                                const img = textureData.imageCube![imgKey as 'front'];
+                                const target = textureCubeTarget[imgKey as 'front'];
+                                if(img && !(img instanceof HTMLImageElement)){
+                                  this.gl.texImage2D(target,0,this.gl.RGBA,this.gl.RGBA,this.gl.UNSIGNED_BYTE,img);
+                                }
+                              });
+                            }
                         }
                         break;
                     }
