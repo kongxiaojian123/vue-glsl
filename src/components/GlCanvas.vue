@@ -1,7 +1,7 @@
 <template>
-    <canvas ref="canvas">
-        <slot/>
-    </canvas>
+  <canvas ref="canvas">
+    <slot/>
+  </canvas>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
