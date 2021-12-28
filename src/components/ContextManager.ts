@@ -384,6 +384,7 @@ export default class ContextManager {
         this.vertexBuffer = null;
         this.gl.deleteShader(this.vertShader);
         this.vertexBuffer = null;
+        this.canvas.style.display = 'none';
         const WEBGL_lose_context = this.gl.getExtension( 'WEBGL_lose_context' );
         if ( WEBGL_lose_context ) WEBGL_lose_context.loseContext();
     }
