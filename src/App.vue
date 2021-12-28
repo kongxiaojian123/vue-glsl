@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <gl-canvas v-if="hasCanvas" @update="glslUpdate">
+    <gl-canvas v-if="hasCanvas" :paused="false" @update="glslUpdate">
       <gl-program name="main" :code="shaderCode">
         <gl-float name="u_light" :value="light" />
       </gl-program>

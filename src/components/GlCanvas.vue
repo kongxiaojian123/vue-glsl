@@ -14,29 +14,35 @@ export default defineComponent({
         }
     },
     props:{
-        width:{
-            type:[String, Number],
-            default:null,
-        },
-        height:{
-            type:[String, Number],
-            default:null,
-        },
-        code:{
-            type:String,
-            default:'',
-        }
+      paused:{
+          type: Boolean,
+          default: false,
+      },
+      width:{
+          type:[String, Number],
+          default:null,
+      },
+      height:{
+          type:[String, Number],
+          default:null,
+      },
+      code:{
+          type:String,
+          default:'',
+      }
     },
     watch:{
       code(val:string){
         this.glContext.commonCode = val;
-        console.log(this);
+      },
+      paused(val:boolean){
+        this.glContext.paused = val;
       }
     },
     data(){
       return{
           canvasRect:null as DOMRect|null,
-          glContext:new ContextManager(),
+          glContext:new ContextManager(this.paused),
       }
     },
     methods:{

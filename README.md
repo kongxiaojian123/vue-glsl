@@ -105,6 +105,7 @@ export default {
   | :--------  | :-----:  |  :------------------------------------------------------ |
   | `width`    | `null`   |  用于设置`canvas`的宽度，不设置宽高会自动读取父级的宽高。    |
   | `height`   | `null`   |  用于设置`canvas`的高度，不设置宽高会自动读取父级的宽高。    |
+  | `paused`   | `false`   |  用于控制监听器的运行，设置`true`可以暂停运行，防止后台渲染，避免不必要的性能损耗。    |
   | `code`     | `''`     |  公共片段着色器代码，多`webGLProgram`时会自动拼接在每个`webGLProgram`的`fragmentShader`中。 |
   | `style`    | `''`     |  `clearColor`设置为透明的，如果想给`canvas`加一个背景的话，设置其样式就好了 |
 
@@ -116,7 +117,7 @@ export default {
   在每一次绘制时会触发该方法供vue做js操作,返回数据为当前帧的一些内置变量。<br/>
   ##### 用法：
   ```html
-  <gl-canvas @update="canvasUpdate">
+  <gl-canvas :paused="false" @update="canvasUpdate">
     <!-- ... -->
   </gl-canvas>
   <script lang="ts">

@@ -189,6 +189,19 @@ export default class ContextManager {
             this.gl.STATIC_DRAW,
         );
     }
+    public get paused(){
+      return this._paused;
+    }
+    public set paused(val:boolean){
+      this._paused = val;
+      cancelAnimationFrame(this.timer);
+      if(!val){
+        this.autoRender();
+      }
+    }
+    public constructor(private _paused=false){
+
+    }
     public init(canvas:HTMLCanvasElement,canvasRect:DOMRect,commonCode:string){
         this.canvas = canvas;
         this.canvasRect = canvasRect;
@@ -212,7 +225,7 @@ export default class ContextManager {
         this.initVertShader();
         this.setSize();
         this.event();
-        this.autoRender();
+        if(!this.paused) this.autoRender();
         this._readyResolve();
     }
     private setExtension(){
