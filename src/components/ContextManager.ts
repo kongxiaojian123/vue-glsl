@@ -208,7 +208,6 @@ export default class ContextManager {
         this.commonCode = commonCode;
         // 绝大部分移动端都不支持 所以直接用webGL 1.0 以及增加了一些webGL2.0的方法
         this.gl = canvas.getContext('webgl',{
-            antialias:true,
             alpha:true,
         }) as WebGLRenderingContext;
         this.setExtension();
