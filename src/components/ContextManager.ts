@@ -483,6 +483,7 @@ export default class ContextManager {
             if(typeof uniform.value === 'string' && (<string>uniform.value).search(/\.(jpg|png)$|^data\:image/)>=0){
                 if((!textureData!.image)||((<HTMLImageElement>textureData!.image).src||'').indexOf(<string>uniform.value)<0){
                     textureData!.image = new Image();
+                    textureData!.image.crossOrigin = 'anonymous';
                     textureData!.image.onload = ()=>{
                         if(repeatX!==undefined) textureData!.repeatX = repeatX;
                         if(repeatY!==undefined) textureData!.repeatY = repeatY;
@@ -547,9 +548,10 @@ export default class ContextManager {
                 }
                 Object.keys(textureData!.imageCube).forEach((imgId)=>{
                     if(typeof (uniform.value as samplerCube)[imgId as 'front'] === 'string'){
-                        textureData!.imageCube![imgId as 'front'] = new Image();
-                        const image = textureData!.imageCube![imgId as 'front'];
-                        image!.onload=()=>{
+                      const image = new Image();
+                        textureData!.imageCube![imgId as 'front'] = image;
+                        image.crossOrigin = 'anonymous';
+                        image.onload=()=>{
                             this.initTexture(
                                 programData.program!,
                                 textureData!.texture!,
@@ -561,7 +563,7 @@ export default class ContextManager {
                                 repeatMode[textureData!.repeatY]
                             );
                         }
-                        (image as HTMLImageElement).src = (uniform.value as samplerCube)[imgId as 'front'] as string;
+                        image.src = (uniform.value as samplerCube)[imgId as 'front'] as string;
                     }else{
                         textureData!.imageCube![imgId as 'front'] = (uniform.value as samplerCube)[imgId as 'front'] as HTMLImageElement;
                         const image = textureData!.imageCube![imgId as 'front'];
